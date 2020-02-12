@@ -7,8 +7,8 @@ const express = require('express');
 const morgan = require('morgan');
 
 // Middleware
-// const notFoundHandler = require('../middleware/404.js');
-// const errorHandler = require('../middleware/500.js');
+const notFoundHandler = require('../middleware/404.js');
+const errorHandler = require('../middleware/500.js');
 
 // Routes Section
 const apiRouter = require('../routes/route.js');
@@ -20,8 +20,8 @@ const app = express();
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(apiRouter);
-// app.use(notFoundHandler);
-// app.use(errorHandler);
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 
 module.exports = {
