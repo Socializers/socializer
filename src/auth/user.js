@@ -6,11 +6,12 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const SECRET = process.env.SECRET;
+const SECRET = process.env.SECRET || 'dania';
 
 const user = new mongoose.Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
+  email:{type:String},
 });
 
 user.pre('save', async function () {
@@ -19,6 +20,20 @@ user.pre('save', async function () {
   }
   return Promise.reject();
 });
+
+user.statics.createFromOauth = function(email){
+  if(!email) {return Promise.reject('Validation Error');}
+  return this.findOne({email})
+  .then(user => {
+    if(!user){throw new Error('User Not Found');}
+  return user;
+  })
+  .catch( error => {
+    let username = email;
+    let password = 'none';
+    return this.create({username,password,email});
+  });
+};
 
 user.statics.authenticator = function (auth) {
   let query = { username: auth.username };

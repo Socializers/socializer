@@ -10,6 +10,7 @@ const router = express.Router();
 
 const User = require('../auth/user.js');
 const authMiddlware = require('../auth/auth-middleware.js');
+const oauth =  require('../auth/oauth-middleware.js')
 const modelFinder = require('../middleware/model-finder.js');
 
 /**
@@ -41,6 +42,7 @@ router.delete('/api/v1/:model/:_id', deleteModelHandler);
 /// User Route
 router.post('/signup', signup);
 router.post('/signin', authMiddlware, signin);
+router.post('/oauth',oauthfun)
 
 ///// Functions
 
@@ -146,5 +148,16 @@ function signup(req, res, next) {
 function signin(req,res,next) {
   res.send(req.token);
 }
-
+/**
+ * @param {string}
+ * @method GET
+ * @returns {object}
+ */
+function oauthfun(req,res,next){
+  oauth.authorize(req)
+  .then( token => {
+    res.status(200).send(token);
+  })
+  .catch(next);
+}
 module.exports = router;

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Document</title>
+</head>
+<body>
+    <h1>Login Page</h1>
+    <a id="id" href="#">Login To The App</a>
+</body>
+<script>
+    let BASEURL ='https://accounts.google.com/o/oauth2/v2/auth';
+    let queryObject={
+        client_id:'603858291976-q7b2li07s4gb54mo7gt2sc4ggp5h7pt7.apps.googleusercontent.com',
+        redirect_uri:'http://localhost',
+        scope:'openid profile email',
+        // access_type:'offline',
+        // include_granted_scopes:true,
+        response_type:'code',
+        state:' '
+    }
+    let Query = Object.keys(queryObject).map((val)=>{
+return `${val}=`+encodeURIComponent(queryObject[val])
+    }).join('&');
+    let theAuthURL=`${BASEURL}?${Query}`;
+    let url = document.getElementById('id');
+    url.setAttribute('href',theAuthURL)
+    console.log('url',url)
+</script>
+</html>
