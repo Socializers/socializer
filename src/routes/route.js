@@ -10,7 +10,7 @@ const router = express.Router();
 
 const User = require('../auth/user.js');
 const authMiddlware = require('../auth/auth-middleware.js');
-const oauth =  require('../auth/oauth-middleware.js')
+const oauth = require('../auth/oauth-middleware.js');
 const modelFinder = require('../middleware/model-finder.js');
 
 /**
@@ -32,6 +32,7 @@ router.get('/api/v1/:model/schema', (req, res, next) => {
 
 /***** Routes *****/
 /// Main Routes
+router.get('/test', oauth , testHandler);
 router.get('/api/v1/test', testHandler);
 router.get('/api/v1/:model', getModelHandler);
 router.get('/api/v1/:model:_id', getOneModelHandler);
@@ -42,11 +43,12 @@ router.delete('/api/v1/:model/:_id', deleteModelHandler);
 /// User Route
 router.post('/signup', signup);
 router.post('/signin', authMiddlware, signin);
-router.post('/oauth',oauthfun)
+router.post('/oauth', oauthfun);
 
 ///// Functions
 
 function testHandler(req, res, next) {
+  console.log('test',req);
   res.status(200).send('I\'m alive');
 }
 
@@ -145,7 +147,7 @@ function signup(req, res, next) {
  * @method GET
  * @returns {object}
  */
-function signin(req,res,next) {
+function signin(req, res, next) {
   res.send(req.token);
 }
 /**
@@ -153,11 +155,11 @@ function signin(req,res,next) {
  * @method GET
  * @returns {object}
  */
-function oauthfun(req,res,next){
+function oauthfun(req, res, next) {
   oauth.authorize(req)
-  .then( token => {
-    res.status(200).send(token);
-  })
-  .catch(next);
+    .then(token => {
+      res.status(200).send(token);
+    })
+    .catch(next);
 }
 module.exports = router;
