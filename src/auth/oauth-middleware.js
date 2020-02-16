@@ -1,7 +1,7 @@
 'use strict';
 const superagent = require('superagent');
 const Users = require('./user.js');
-const API = 'http://localhost';
+const API = 'http://localhost:3000';
 const GTS = 'https://www.googleapis.com/oauth2/v4/token';
 const SERVICE = 'https://www.googleapis.com/plus/v1/people/me/openIdConnect';
 
@@ -13,7 +13,7 @@ return superagent.post(GTS)
      code:code,
      client_id:'603858291976-q7b2li07s4gb54mo7gt2sc4ggp5h7pt7.apps.googleusercontent.com',
      client_secret:'epO_Jcm_YPuMlGCmg-9c5kaH',
-     redirect_uri:`${API}`,
+     redirect_uri:`${API}/oauth`,
      grant_type:'authorization_code',
  })
  .then( response => {
