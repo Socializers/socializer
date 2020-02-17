@@ -12,7 +12,7 @@ const SECRET = process.env.SECRET ;
 const user = new mongoose.Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
-  email:{type:String},
+  email:{type:String , required:true}
 });
 
 user.pre('save', async function () {
@@ -22,10 +22,13 @@ user.pre('save', async function () {
   return Promise.reject();
 });
 
-user.methods.createFromOauth = function(email){
+user.statics.createFromOauth = function(email){
+  console.log('email in craete from oauth' , email);
+
   if(!email) {return Promise.reject('Validation Error');}
-  return this.findOne({email})
+  return this.findOne({email: `${email.email}`})
     .then(user => {
+      console.log('user in create from oauth', user);
       if(!user){throw new Error('User Not Found');}
       return user;
     })
@@ -54,16 +57,22 @@ user.methods.passwordComparator = function (pass) {
 };
 
 user.statics.siginTokenGenerator = function (user) {
-  console.log('token');
+  // console.log('token');
   let token = {
     id: user._id,
+    username:user.username,
+    password:user.password,
+    email:user.email,
   };
   return jwt.sign(token, SECRET);
 };
 user.methods.signupTokenGenerator = function (user) {
-  console.log('token');
+  // console.log('token');
   let token = {
     id: user._id,
+    username:user.username,
+    password:user.password,
+    email:user.email,
   };
   return jwt.sign(token, SECRET);
 };

@@ -17,9 +17,9 @@ module.exports = (req, res, next) => {
 
   user.authenticator(auth)
     .then(validUser => {
-      console.log('sss');
+      // console.log('sss');
       req.token = user.siginTokenGenerator(validUser);
-      console.log(req.token);
+      // console.log(req.token);
       next();
     })
     .catch(() => next('Ops'));

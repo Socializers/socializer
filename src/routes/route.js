@@ -34,7 +34,7 @@ router.get('/api/v1/:model/schema', (req, res, next) => {
 
 /***** Routes *****/
 /// Main Routes
-// router.get('/test', oauth , testHandler);
+router.get('/oauth',oauth, testHandler);
 router.get('/api/v1/test', testHandler);
 router.get('/api/v1/:model', getModelHandler);
 router.get('/api/v1/:model:_id', getOneModelHandler);
@@ -43,15 +43,19 @@ router.put('/api/v1/:model/:_id', updateModelHandler);
 router.delete('/api/v1/:model/:_id', deleteModelHandler);
 
 /// User Route
-// router.post('/signup', signup);
-// router.post('/signin', authMiddlware, signin);
-// router.post('/oauth', oauthfun);
+router.post('/signup', signup);
+router.post('/signin', authMiddlware, signin);
+router.post('/oauth', oauth);
 
-///// Functions
-
+/// Functions
+router.get('/', function(req, res) {
+  res.render('pages/index');
+});
 function testHandler(req, res, next) {
   console.log('test',req);
   res.status(200).send('I\'m alive');
+
+  // res.render('pages/index')
 }
 
 
@@ -65,6 +69,7 @@ function getModelHandler(req, res, next) {
     .then(data => {
       let count = data.length;
       res.json({ count, data });
+
     })
     .catch(next);
 }
@@ -90,7 +95,7 @@ function getOneModelHandler(req, res, next) {
  */
 function creatModelHandler(req, res, next) {
   let record = req.body;
-  console.log('hi',record)
+  // console.log('hi',record)
   req.model.create(record)
     .then(data => {
       res.json(data);
@@ -158,13 +163,13 @@ function signin(req, res, next) {
  * @method GET
  * @returns {object}
  */
-function oauthfun(req, res, next) {
-  oauth.authorize(req)
-    .then(token => {
-      res.status(200).send(token);
-    })
-    .catch(next);
-}
+// function oauthfun(req, res, next) {
+//   oauth.authorize(req)
+//     .then(token => {
+//       res.status(200).send(token);
+//     })
+//     .catch(next);
+// }
 function getModel(req,res,next){
   let model = req.params.model;
   switch(model){
