@@ -83,4 +83,17 @@ user.methods.signupTokenGenerator = function (user) {
   return jwt.sign(token, SECRET);
 };
 
+user.statics.authenticateToken = async function (token) {
+  try {
+    let tokenObject = jwt.verify(token, SECRET);
+    if (tokenObject.username) {
+      return Promise.resolve(tokenObject.username);
+    } else {
+      return Promise.reject();
+    }
+  } catch (e) {
+    return Promise.reject();
+  }
+};
+
 module.exports = mongoose.model('user', user);

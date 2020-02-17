@@ -7,7 +7,6 @@ const superagent = require('superagent');
 const Users = require('./user.js');
 
 const GTS = 'https://www.googleapis.com/oauth2/v4/token';
-const SERVICE = 'https://mail.google.com';
 
 module.exports = async function authorize(req, res, next) {
   try {
@@ -34,23 +33,24 @@ async function codeTokenExchanger(code) {
       redirect_uri: 'http://localhost:3000/google',
       grant_type: 'authorization_code',
     });
+  console.log('tokenObject',tokenResponse.body);
   let access_token = tokenResponse.body.id_token;
   return access_token;
 }
 
 async function getRemoteUserInfo(token) {
   return await superagent
-    .get(SERVICE)
-    .set('Authorization', `Bearer ${token}`)
-    .then(() => {
-      let user = Users.decode(token);
-      user.access_token = token;
-      return user;
+    .post(`https://www.googleapis.com/oauth2/v1/tokeninfo?id_token=${token}`)
+    .then(data => {
+      console.log('data', data.body);
+      let user = Users.decode(token) || data.body;
+      console.log('user', user);
+      return user.email;
     });
 
 }
 async function getUser(oauthUser) {
-  let user = await Users.createFromOauth(oauthUser.email);
+  let user = await Users.createFromOauth(oauthUser);
   return user;
 }
 

@@ -10,7 +10,8 @@ const router = express.Router();
 
 const User = require('../auth/user.js');
 const authMiddlware = require('../auth/auth-middleware.js');
-const oauth = require('../auth/oauth-middleware.js');
+const oauthMiddleware = require('../auth/oauth-middleware.js');
+const bearerMiddleware = require('../auth/bearer/bearer-middleware.js');
 const modelFinder = require('../middleware/model-finder.js');
 
 /**
@@ -32,7 +33,6 @@ router.get('/api/v1/:model/schema', (req, res, next) => {
 
 /***** Routes *****/
 /// Main Routes
-router.get('/google', oauth , googleTokenHandler);
 router.get('/api/v1/test', googleTokenHandler);
 router.get('/api/v1/:model', getModelHandler);
 router.get('/api/v1/:model:_id', getOneModelHandler);
@@ -43,7 +43,9 @@ router.delete('/api/v1/:model/:_id', deleteModelHandler);
 /// User Route
 router.post('/signup', signup);
 router.post('/signin', authMiddlware, signin);
-router.post('/oauth', oauthfun);
+router.get('/google', oauthMiddleware , googleTokenHandler);
+router.get('/oauth', oauthfun);
+router.get('/user',bearerMiddleware,bearer);
 
 ///// Functions
 
@@ -155,10 +157,21 @@ function signin(req, res, next) {
  * @returns {object}
  */
 function oauthfun(req, res, next) {
-  oauth.authorize(req)
+  oauthMiddleware.authorize(req)
     .then(token => {
       res.status(200).send(token);
     })
     .catch(next);
 }
+
+/**
+ * @param {string}
+ * @method GET
+ * @returns {object}
+ */
+function bearer(req, res, next) {
+  console.log('route',req.user);
+  res.status(200).json(req.user);
+}
+
 module.exports = router;
