@@ -16,6 +16,7 @@ const loadFile = (req, res, next) => {
   let modelName = req.params.model.replace(/[^a-z0-9-_]/gi, '');
   const Model = require(`../models/${modelName}/${modelName}-model.js`);
   req.model = new Model();
+  console.log('req.model',req.model)
   next();
 };
 

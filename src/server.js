@@ -7,11 +7,11 @@ const express = require('express');
 const morgan = require('morgan');
 
 // Middleware
-const notFoundHandler = require('./src/middleware/404.js');
-const errorHandler = require('./src/middleware/500.js');
+const notFoundHandler = require('./middleware/404.js');
+const errorHandler = require('./middleware/500.js');
 
 // Routes Section
-const apiRouter = require('./src/routes/route.js');
+const apiRouter = require('./routes/route.js');
 
 // app constant
 const app = express();
@@ -19,8 +19,8 @@ const app = express();
 
 app.use(express.json());
 app.use(morgan('dev'));
-app.use(express.static('./public'))
 app.use(apiRouter);
+app.use(express.static('./public'));
 app.use(notFoundHandler);
 app.use(errorHandler);
 
@@ -28,7 +28,7 @@ app.use(errorHandler);
 module.exports = {
   server:app,
   start: port =>{
-    let PORT = port || process.env.PORT || 9797;
+    let PORT = port || process.env.PORT || 3000;
     app.listen(PORT, () => console.log(`My name is ${PORT}`));
   },
 };

@@ -4,7 +4,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 
-const server = require('./server.js');
+const server = require('./src/server.js');
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/social';
 const PORT = process.env.PORT;
@@ -17,4 +17,4 @@ const mongooseOptions = {
 };
 
 mongoose.connect(MONGODB_URI, mongooseOptions);
-server.start(3000);
+server.start(PORT);
