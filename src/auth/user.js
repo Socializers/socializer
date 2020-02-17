@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
 /* eslint-disable strict */
 'use strict';
@@ -6,13 +7,16 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const jwt_decode = require('jwt-decode');
 
-const SECRET = process.env.SECRET ;
+
+
+const SECRET = process.env.SECRET;
 
 const user = new mongoose.Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
-  email:{type:String},
+  email: { type: String },
 });
 
 user.pre('save', async function () {
@@ -22,18 +26,27 @@ user.pre('save', async function () {
   return Promise.reject();
 });
 
-user.methods.createFromOauth = function(email){
-  if(!email) {return Promise.reject('Validation Error');}
-  return this.findOne({email})
+user.statics.createFromOauth = function (email) {
+  if (!email) { return Promise.reject('Validation Error'); }
+
+  return this.findOne({ email })
     .then(user => {
-      if(!user){throw new Error('User Not Found');}
+      if (!user) { throw new Error('User Not Found'); }
+      console.log('Welcome Back', user.username);
       return user;
     })
-    .catch( error => {
+    .catch(error => {
+      console.log('Creating new user');
       let username = email;
       let password = 'none';
-      return this.create({username,password,email});
+      return this.create({ username, password, email });
     });
+
+};
+
+user.statics.decode = function (token) {
+  let decoded = jwt_decode(token);
+  return decoded;
 };
 
 user.statics.authenticator = function (auth) {
@@ -54,16 +67,18 @@ user.methods.passwordComparator = function (pass) {
 };
 
 user.statics.siginTokenGenerator = function (user) {
-  console.log('token');
   let token = {
     id: user._id,
+    username: user.username,
+    email: user.email,
   };
   return jwt.sign(token, SECRET);
 };
 user.methods.signupTokenGenerator = function (user) {
-  console.log('token');
   let token = {
     id: user._id,
+    username: user.username,
+    email: user.email,
   };
   return jwt.sign(token, SECRET);
 };

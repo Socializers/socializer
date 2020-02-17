@@ -32,8 +32,8 @@ router.get('/api/v1/:model/schema', (req, res, next) => {
 
 /***** Routes *****/
 /// Main Routes
-router.get('/test', oauth , testHandler);
-router.get('/api/v1/test', testHandler);
+router.get('/google', oauth , googleTokenHandler);
+router.get('/api/v1/test', googleTokenHandler);
 router.get('/api/v1/:model', getModelHandler);
 router.get('/api/v1/:model:_id', getOneModelHandler);
 router.post('/api/v1/:model', creatModelHandler);
@@ -47,9 +47,8 @@ router.post('/oauth', oauthfun);
 
 ///// Functions
 
-function testHandler(req, res, next) {
-  console.log('test',req);
-  res.status(200).send('I\'m alive');
+function googleTokenHandler(req, res, next) {
+  res.status(200).send(req.user.validToken);
 }
 
 

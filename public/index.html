@@ -12,13 +12,13 @@
 <script>
     let BASEURL = 'https://accounts.google.com/o/oauth2/v2/auth';
     let queryObject = {
-        scope: 'https://mail.google.com',
-        access_type: 'offline',
-        include_granted_scopes: true,
-        state: 'state_parameter_passthrough_value',
-        redirect_uri: 'http://localhost:3000/test',
         response_type: 'code',
-        client_id: '603858291976-q7b2li07s4gb54mo7gt2sc4ggp5h7pt7.apps.googleusercontent.com',
+        client_id: '1082218993942-1ib34ft542p930gk7ilh8ngf8roopm64.apps.googleusercontent.com',
+        scope: 'openid email',
+        redirect_uri: 'http://localhost:3000/google',
+        state: 'http://localhost',
+        access_type: 'offline',
+        login_hint: 'ajarmeh1997@gmail.com',
     }
 
     let Query = Object.keys(queryObject).map((val) => {
