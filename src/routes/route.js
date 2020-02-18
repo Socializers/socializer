@@ -1,0 +1,194 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable new-cap */
+/* eslint-disable strict*/
+
+'use strict';
+
+const express = require('express');
+
+const router = express.Router();
+
+const User = require('../auth/user.js');
+const authMiddlware = require('../auth/auth-middleware.js');
+const githunOauthmiddleware = require('../auth/oauth/github.js');
+const googleOauthMiddleware = require('../auth/oauth/google.js');
+const facebookOauthMiddleware = require('../auth/oauth/facebook.js');
+const bearerMiddleware = require('../auth/bearer/bearer-middleware.js');
+const modelFinder = require('../middleware/model-finder.js');
+
+/**
+ * @param {string}
+ * @route model
+ * @returns {object}
+ */
+router.param('model', modelFinder.loadFile);
+
+/**
+ * @param {string}
+ * @route /api/v1/models
+ * @returns {object}
+ */
+
+router.get('/api/v1/:model/schema', (req, res, next) => {
+  res.status(200).json(req.model.jsonSchema());
+});
+
+/***** Routes *****/
+/// Main Routes
+router.get('/', mainPage);
+router.get('/api/v1/test', googleTokenHandler);
+router.get('/api/v1/:model', getModelHandler);
+router.get('/api/v1/:model:_id', getOneModelHandler);
+router.post('/api/v1/:model', creatModelHandler);
+router.put('/api/v1/:model/:_id', updateModelHandler);
+router.delete('/api/v1/:model/:_id', deleteModelHandler);
+
+/// User Route
+router.post('/signup', signup);
+router.post('/signin', authMiddlware, signin);
+router.get('/google', googleOauthMiddleware, googleTokenHandler);
+router.get('/oauth', oauthfun);
+router.get('/user', bearerMiddleware, bearer);
+
+///// Functions
+
+function googleTokenHandler(req, res, next) {
+  console.log('user', req.user);
+  res.status(200).render('google', { email: req.user.validUser.username });
+}
+
+function mainPage(req, res) {
+  console.log('here');
+  res.status(200).render('index');
+}
+
+/**
+ * @param {string}
+ * @method GET
+ * @returns {object}
+ */
+function getModelHandler(req, res, next) {
+  req.model.get()
+    .then(data => {
+      let count = data.length;
+      res.json({ count, data });
+    })
+    .catch(next);
+}
+
+/**
+ * @param {string}
+ * @method GET
+ * @returns {object}
+ */
+function getOneModelHandler(req, res, next) {
+  let _id = req.param.id;
+  req.model.get(_id)
+    .then(data => {
+      res.json(data);
+    })
+    .catch(next);
+}
+
+/**
+ * @param {string}
+ * @method POST
+ * @returns {object}
+ */
+function creatModelHandler(req, res, next) {
+  let record = req.body;
+  req.model.create(record)
+    .then(data => {
+      res.json(data);
+    })
+    .catch(next);
+}
+
+/**
+ * @param {string}
+ * @method PUT
+ * @returns {object}
+ */
+function updateModelHandler(req, res, next) {
+  let record = req.body;
+  let _id = req.param.id;
+  req.model.update(_id, record)
+    .then(data => {
+      res.json(data);
+    })
+    .catch(next);
+}
+
+/**
+ * @param {string}
+ * @method DELETE
+ * @returns {object}
+ */
+function deleteModelHandler(req, res, next) {
+  let _id = req.param.id;
+  req.model.delete(_id)
+    .then(() => {
+      let message = `${req.model}`;
+      res.send(message);
+    })
+    .catch(next);
+}
+
+/**
+ * @param {string}
+ * @method POST
+ * @returns {object}
+ */
+function signup(req, res, next) {
+  let validUser = req.body.username;
+  User.findOne({ 'username': `${validUser}` })
+    .then(existUser => {
+      if (validUser === existUser.username) {
+        res.status(200).render('already');
+      }
+    })
+    .catch(() => {
+      console.log('here', [validUser, req.body]);
+      let user = new User(req.body);
+      user.save()
+        .then(oneUser => {
+          req.token = oneUser.signupTokenGenerator(oneUser);
+          console.log('here signup route', req.token);
+          req.user = oneUser;
+          res.status(200).render('basic', { name: req.user.username });
+        });
+    });
+}
+
+/**
+ * @param {string}
+ * @method GET
+ * @returns {object}
+ */
+function signin(req, res, next) {
+  res.send(req.token);
+}
+/**
+ * @param {string}
+ * @method GET
+ * @returns {object}
+ */
+function oauthfun(req, res, next) {
+  githunOauthmiddleware.authorize(req)
+    .then(token => {
+      res.status(200).send(token);
+    })
+    .catch(next);
+}
+
+/**
+ * @param {string}
+ * @method GET
+ * @returns {object}
+ */
+function bearer(req, res, next) {
+  console.log('route', req.user);
+  res.status(200).json(req.user);
+}
+
+module.exports = router;

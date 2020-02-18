@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <h1>
+            SOCIALIZER
+        </h1>
+    </header>
+    <main>
+        <form id="signup" action="/signup" method="POST">
+            <label for="username">
+                UserName: <input name="username" type="text" required>
+            </label>
+            <label for="password">
+                Password: <input name="password" type="password" required>
+            </label>
+            <button type="submit">signup</button>
+        </form>
+        <a id="id" href="#">Login VIA GOOGLE</a>
+    </main>
+    <script>
+        let BASEURL = 'https://accounts.google.com/o/oauth2/v2/auth';
+        let queryObject = {
+            response_type: 'code',
+            client_id: '1082218993942-1ib34ft542p930gk7ilh8ngf8roopm64.apps.googleusercontent.com',
+            scope: 'openid email',
+            redirect_uri: 'http://localhost:3000/google',
+            state: 'http://localhost',
+            access_type: 'offline',
+        }
+    
+        let Query = Object.keys(queryObject).map((val) => {
+            return `${val}=` + encodeURIComponent(queryObject[val])
+        }).join('&');
+        let theAuthURL = `${BASEURL}?${Query}`;
+        let url = document.getElementById('id');
+        url.setAttribute('href', theAuthURL)
+        console.log('url', url)
+    </script>
+    
+</body>
+</html>
