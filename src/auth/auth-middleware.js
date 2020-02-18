@@ -7,6 +7,7 @@ const user = require('./user.js');
 
 module.exports = (req, res, next) => {
   if (!req.headers.authorization) {
+    console.log('req.headers.authorization',req.headers.authorization)
     next('Ops something went wrong');
     return;
   }

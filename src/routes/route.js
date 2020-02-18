@@ -1,11 +1,7 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable new-cap */
-/* eslint-disable strict*/
-
 'use strict';
 
 const express = require('express');
-
+// const app = express();
 const router = express.Router();
 
 const User = require('../auth/user.js');
@@ -38,7 +34,7 @@ router.get('/api/v1/:model/schema', (req, res, next) => {
 router.get('/', mainPage);
 router.get('/api/v1/test', googleTokenHandler);
 router.get('/api/v1/:model', getModelHandler);
-router.get('/api/v1/:model:_id', getOneModelHandler);
+router.get('/api/v1/:model/:_id', getOneModelHandler);
 router.post('/api/v1/:model', creatModelHandler);
 router.put('/api/v1/:model/:_id', updateModelHandler);
 router.delete('/api/v1/:model/:_id', deleteModelHandler);
@@ -97,6 +93,7 @@ function getOneModelHandler(req, res, next) {
  */
 function creatModelHandler(req, res, next) {
   let record = req.body;
+  console.log('record',record);
   req.model.create(record)
     .then(data => {
       res.json(data);

@@ -28,12 +28,16 @@ app.use(express.static('./public'));
 app.set('view engine', 'ejs');
 app.use(notFoundHandler);
 app.use(errorHandler);
+app.set('view engine', 'ejs');
 
+// app.get('/t', function(req, res) {
+//   res.render('pages/index');
+// });
 
 module.exports = {
   server:app,
   start: port =>{
-    let PORT = port || process.env.PORT || 9797;
+    let PORT = port || process.env.PORT || 3000;
     app.listen(PORT, () => console.log(`My name is ${PORT}`));
   },
 };

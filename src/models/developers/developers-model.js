@@ -2,13 +2,13 @@
 
 'use strict';
 
-const schema = require('./educations-schema.js');
+const schema = require('./developers-schema.js');
 const Model = require('../mongo.js');
 
-class Educations extends Model{
+class Developers extends Model{
   constructor(){
     super(schema);
   }
 }
 
-module.exports = Educations;
+module.exports = Developers;

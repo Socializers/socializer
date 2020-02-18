@@ -1,3 +1,4 @@
+
 /* eslint-disable camelcase */
 /* eslint-disable strict */
 
@@ -60,4 +61,3 @@ async function getToken(validUser) {
   let token = await Users.siginTokenGenerator(validUser);
   return token;
 }
-
