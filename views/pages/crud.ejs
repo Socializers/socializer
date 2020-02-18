@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CRUD</title>
+</head>
+
+<body>
+    <form action="/api/v1/<%= model%>" method="get">
+        <button type="submit">GET</button>
+    </form>
+    <br> <br> <br>
+    <form id="create" action="/api/v1/<%= model%>" method="POST">
+        <input type="text" name="name" required>
+        <input type="text" name="des" required>
+        <input id="field" type="text">
+        <button id="add">add field</button>
+        <button type="submit">POST</button>
+    </form>
+
+    <br> <br> <br>
+
+    <form id="getId" action="" method="GET">
+        <label for="id">
+            <input id="get" type="text" required>
+        </label>
+        <button id="confirmGet">CONFIRM ID</button>
+        <button type="submit">GET ONE</button>
+    </form>
+
+    <br> <br> <br>
+
+    <form id="deleteId" action="" method="POST">
+        <input type="hidden" name="_method" value="delete">
+        <label for="id">
+            <input id="delete" type="text" required>
+        </label>
+        <button id="confirmDelete">CONFIRM ID</button>
+        <button type="submit">DELETE ONE</button>
+    </form>
+
+    <br> <br> <br>
+    <div>
+        <p>Please use this form to enter your info: <br> key1|value1, key2|value2, key3|value3</p>
+    </div>
+    <form id="updateId" action="" method="POST">
+        <input type="hidden" name="_method" value="put">
+        <label for="id">
+            <input id="update" type="" required>
+        </label>
+        <textarea name="updateField" id="updateField" cols="30" rows="10">name|fieldName, des|fieldDes</textarea>
+        <button id="confirmUpdate">CONFIRM ID</button>
+        <button id="updateOne">CONFIRM UPDATE</button>
+        <button type="submit">UPDATE ONE</button>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        console.log($('#create').html())
+        $(document).ready(function () {
+
+            $('#add').click(function (e) {
+                e.preventDefault();
+                $('#field').before(`<input type="text" name="${$('#field').val()}">`);
+                console.log($('#field').val())
+            });
+
+            $('#confirmGet').click(function (e) {
+                e.preventDefault();
+                $('#getId').attr('action', `/api/v1/<%= model%>/${$("#get").val()}`);
+
+            });
+
+            $('#confirmDelete').click(function (e) {
+                e.preventDefault();
+                $('#deleteId').attr('action', `/api/v1/<%= model%>/${$("#delete").val()}`);
+
+            });
+
+            $('#confirmUpdate').click(function (e) {
+                e.preventDefault();
+                $('#updateId').attr('action', `/api/v1/<%= model%>/${$("#update").val()}`);
+                console.log('update', $("#update").val())
+            });
+
+            $('#updateOne').click(function (e) {
+                e.preventDefault();
+                let string = $('#updateField').val();
+                let fields = string.split(', '),
+                    fieldObject = {};
+                console.log('ss', fields)
+                if (typeof fields === 'object') {
+                    fields.forEach(field => {
+                        let c = field.split('|');
+                        fieldObject[c[0]] = c[1];
+                    });
+                }
+                let result = Object.keys(fieldObject).map(function (key) {
+                    return [key, fieldObject[key]];
+                });
+                console.log('asdf', result)
+                result.forEach(oneField => {
+                    console.log('oneField[0]', oneField[0])
+                    console.log('oneField[1]', oneField[1])
+                    $('#confirmUpdate').before(`<input name='${oneField[0]}' value='${oneField[1]}'>`);
+                    $('#updateField').remove();
+                });
+                $('#updateField').text(fieldObject);
+                console.log('done', fieldObject)
+
+            });
+
+        });
+    </script>
+</body>
+
+</html>
