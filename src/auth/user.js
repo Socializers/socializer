@@ -14,7 +14,7 @@ const jwt_decode = require('jwt-decode');
 const SECRET = process.env.SECRET;
 
 const user = new mongoose.Schema({
-  username: { type: String, required: true },
+  username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   email: { type: String },
 });
