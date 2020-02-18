@@ -15,7 +15,7 @@ const jwt_decode = require('jwt-decode');
 const SECRET = process.env.SECRET||'dede';
 
 const user = new mongoose.Schema({
-  username: { type: String, required: true },
+  username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   email: { type: String },
 });
@@ -87,6 +87,19 @@ user.methods.signupTokenGenerator = function (user) {
   console.log('token',token);
   
   return jwt.sign(token, SECRET);
+};
+
+user.statics.authenticateToken = async function (token) {
+  try {
+    let tokenObject = jwt.verify(token, SECRET);
+    if (tokenObject.username) {
+      return Promise.resolve(tokenObject.username);
+    } else {
+      return Promise.reject();
+    }
+  } catch (e) {
+    return Promise.reject();
+  }
 };
 
 module.exports = mongoose.model('user', user);
