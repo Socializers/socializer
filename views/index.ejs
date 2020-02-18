@@ -2,6 +2,75 @@
 <html lang="en">
 <head>
     <title>Document</title>
+    <style>
+        h1
+{
+  font-size: 48px;
+  text-shadow: -1px -1px #9df, 1px 1px #49d, -3px 0 4px #000;
+  font-family:"Segoe print", Arial, Helvetica, sans-serif;
+  color:#6bf;
+  padding:24px 32px 32px 32px;
+  font-weight:lighter;
+  -moz-box-shadow: 2px 2px 6px #888;  
+  -webkit-box-shadow: 2px 2px 6px #888;  
+  box-shadow:2px 2px 6px #888;  
+  text-align:center;
+  /* display:inline; */
+  line-height:150px;
+  background-image:url(images/background-h1-wide.jpg);
+}
+ button {
+	box-shadow: 0px 10px 14px -7px #276873;
+	background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
+	background-color:#599bb3;
+	border-radius:8px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:20px;
+	font-weight:bold;
+	padding:13px 32px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #3d768a;
+}
+button:hover {
+	background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
+	background-color:#408c99;
+}
+button:active {
+	position:relative;
+	top:1px;
+}
+
+ input {
+  width: 20%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 2px solid 408c99;
+  border-radius: 12px;
+}
+h1,p ,label{
+color: #408c99;
+} 
+label{
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: large;
+}
+p{
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: large;
+}
+textarea{
+    width: 20%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 2px solid #408c99;
+  border-radius: 12px;
+}
+    </style>
 </head>
 <body>
     <header>
@@ -18,7 +87,7 @@
                 Password: <input name="password" type="password" required>
             </label>
             <button type="submit">signup</button>
-        </form>
+        </form><br><br>
         <a id="id" href="#">Login VIA GOOGLE</a>
     </main>
     <script>

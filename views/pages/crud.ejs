@@ -3,56 +3,135 @@
 
 <head>
     <title>CRUD</title>
+    <style>
+        form{
+            max-width: 450px;
+	background: #FAFAFA;
+	padding: 30px;
+	margin: 50px auto;
+	box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+	border-radius: 10px;
+	border: 6px solid #305A72; 
+        }
+button {
+	position: relative;
+	display: block;
+	padding: 19px 39px 18px 39px;
+	color: #FFF;
+	margin: 0 auto;
+	background: #305A72;
+	font-size: 18px;
+	text-align: center;
+	font-style: normal;
+	width: 100%;
+	border: 1px solid #305A72;
+	border-width: 1px 1px 3px;
+	margin-bottom: 10px;
+}
+}
+button:hover {
+	background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
+	background-color:#408c99;
+}
+button:active {
+	position:relative;
+	top:1px;
+}
+
+
+h1,p ,label{
+color: #408c99;
+text-align: center;
+} 
+label{
+    display: block;
+	margin-bottom: 8px;
+    font-size: large;
+
+}
+p{
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: large;
+}
+textarea,input{
+    font-family: Georgia, "Times New Roman", Times, serif;
+	background: rgba(255,255,255,.1);
+	border: none;
+	border-radius: 4px;
+	font-size: 15px;
+	margin: 0;
+	outline: 0;
+	padding: 10px;
+	width: 100%;
+	box-sizing: border-box; 
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box; 
+	background-color: #e8eeef;
+	color:#8a97a0;
+	-webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+	box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+	margin-bottom: 30px;
+}
+    </style>
 </head>
 
 <body>
+    <h1>The CRUD methods</h1>
     <form action="/api/v1/<%= model%>" method="get">
+        <p>Retrieve all data from <%= model%> schema</p>
         <button type="submit">GET</button>
     </form>
-    <br> <br> <br>
-    <form id="create" action="/api/v1/<%= model%>" method="POST">
-        <input type="text" name="name" required>
-        <input type="text" name="des" required>
-        <input id="field" type="text">
-        <button id="add">add field</button>
-        <button type="submit">POST</button>
-    </form>
 
     <br> <br> <br>
-
     <form id="getId" action="" method="GET">
-        <label for="id">
+        <p>Retrieve related data to it's id from <%= model%> schema </p>
+        <label for="id">_id: 
             <input id="get" type="text" required>
-        </label>
-        <button id="confirmGet">CONFIRM ID</button>
+        </label> <br> <br>
+        <button id="confirmGet">CONFIRM ID</button> <br> <br>
         <button type="submit">GET ONE</button>
     </form>
 
     <br> <br> <br>
-
-    <form id="deleteId" action="" method="POST">
-        <input type="hidden" name="_method" value="delete">
-        <label for="id">
-            <input id="delete" type="text" required>
-        </label>
-        <button id="confirmDelete">CONFIRM ID</button>
-        <button type="submit">DELETE ONE</button>
+    <form id="create" action="/api/v1/<%= model%>" method="POST">
+        <p>Create new data and new field and add it to <%= model%> schema </p>
+        <label> name: <input type="text" name="name" required></label> <br> <br>
+        <label>description: <input type="text" name="des" required> </label> <br> <br>
+        <input id="field" type="text"> <br> <br>
+        <button id="add">add field</button> <br> <br>
+        <button type="submit">POST</button>
     </form>
 
     <br> <br> <br>
     <div>
-        <p>Please use this form to enter your info: <br> key1|value1, key2|value2, key3|value3</p>
     </div>
     <form id="updateId" action="" method="POST">
+        <p>Please use this form to enter your info: <br> key1|value1, key2|value2, key3|value3</p>
         <input type="hidden" name="_method" value="put">
         <label for="id">
-            <input id="update" type="" required>
-        </label>
-        <textarea name="updateField" id="updateField" cols="30" rows="10">name|fieldName, des|fieldDes</textarea>
-        <button id="confirmUpdate">CONFIRM ID</button>
-        <button id="updateOne">CONFIRM UPDATE</button>
+            _id:  
+            <input id="update" type="text" required>
+        </label> <br> <br>
+        <input id="fieldtwo" type="text"> <br> <br>
+        <textarea name="updateField"  id="updateField" cols="1000" rows="5">name|fieldName, des|fieldDes</textarea> <br>
+        <br>
+        <button id="addtwo">add field</button> <br> <br>
+        <button id="confirmUpdate">CONFIRM ID</button> <br> <br>
+        <button id="updateOne">CONFIRM UPDATE</button> <br> <br>
         <button type="submit">UPDATE ONE</button>
     </form>
+
+    <br> <br> <br>
+    <form id="deleteId" action="" method="POST">
+        <p>Delete the data related to specific id</p>
+        <input type="hidden" name="_method" value="delete">
+        <label for="id">
+            <input id="delete" type="text" required>
+        </label> <br> <br>
+        <button id="confirmDelete">CONFIRM ID</button> <br> <br>
+        <button type="submit">DELETE ONE</button>
+    </form>
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
@@ -61,7 +140,7 @@
 
             $('#add').click(function (e) {
                 e.preventDefault();
-                $('#field').before(`<input type="text" name="${$('#field').val()}">`);
+                $('#field').before(`<label>${$('#field').val()}: </label><input type="text" name="${$('#field').val()}">`);
                 console.log($('#field').val())
             });
 
@@ -75,6 +154,12 @@
                 e.preventDefault();
                 $('#deleteId').attr('action', `/api/v1/<%= model%>/${$("#delete").val()}`);
 
+            });
+
+            $('#addtwo').click(function (e) {
+                e.preventDefault();
+                $('#fieldtwo').before(`<label>${$('#fieldtwo').val()}: </label><input type="text" name="${$('#fieldtwo').val()}">`);
+                console.log($('#fieldtwo').val())
             });
 
             $('#confirmUpdate').click(function (e) {
