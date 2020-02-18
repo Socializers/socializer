@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 
 const server = require('./src/server.js');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/social';
+const MONGODB_URI ='mongodb://localhost:27017/social';
 const PORT = process.env.PORT;
 
 const mongooseOptions = {

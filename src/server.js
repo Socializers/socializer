@@ -17,15 +17,18 @@ const apiRouter = require('./routes/route.js');
 const app = express();
 
 
-app.set('view engine', 'ejs');
-app.use(express.json());
+app.use(express.static('./public'));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(morgan('dev'));
 app.use(apiRouter);
-// app.use(express.static('./public'));
 app.use(notFoundHandler);
 app.use(errorHandler);
+app.set('view engine', 'ejs');
 
+// app.get('/t', function(req, res) {
+//   res.render('pages/index');
+// });
 
 module.exports = {
   server:app,

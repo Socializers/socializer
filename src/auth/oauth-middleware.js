@@ -1,47 +1,61 @@
+
+/* eslint-disable camelcase */
+/* eslint-disable strict */
 'use strict';
 
 const superagent = require('superagent');
-const Users = require('../auth/user.js');
 
-const authorize = (req) => {
+const Users = require('./user.js');
 
-  let code = req.query.code;
-  console.log('(1) CODE:', code);
+const GTS = 'https://www.googleapis.com/oauth2/v4/token';
+const SERVICE = 'https://mail.google.com';
 
-  return superagent.post('https://oauth2.googleapis.com/token')
+module.exports = async function authorize(req, res, next) {
+  try {
+    let code = req.query.code;
+    let access_token = await codeTokenExchanger(code);
+    let remoteUser = await getRemoteUserInfo(access_token);
+    let validUser = await getUser(remoteUser);
+    let validToken = await getToken(validUser);
+    req.user = { validUser, validToken };
+    next();
+  }
+  catch (e) {
+    next(e);
+  }
+};
+
+async function codeTokenExchanger(code) {
+  let tokenResponse = await superagent.post(GTS)
     .type('form')
     .send({
       code: code,
-      client_id: '603858291976-q7b2li07s4gb54mo7gt2sc4ggp5h7pt7.apps.googleusercontent.com',
-      client_secret: 'epO_Jcm_YPuMlGCmg-9c5kaH',
-      redirect_uri: 'http://localhost:3000/oauth',
+      client_id: '1082218993942-1ib34ft542p930gk7ilh8ngf8roopm64.apps.googleusercontent.com',
+      client_secret: 'zc8KkzVyO8w-HN2MEPIXg5oq',
+      redirect_uri: 'http://localhost:3000/google',
       grant_type: 'authorization_code',
-    })
-    .then( response => {
-      let access_token = response.body.access_token;
-      console.log('(2) ACCESS TOKEN:', access_token);
-      return access_token;
-    })
-    .then(token => {
-      console.log(' 3rd token ',token);
-      
-      return superagent.get('https://www.googleapis.com/plus/v1/people/me/openIdConnect')
-        .set('Authorization', `Bearer ${token}`)
-        .then( response => {
-          let user = response.body;
-          user.access_token = token;
-          console.log('(3) GOOGLEUSER', user);
-          return user;
-        });
-    })
-    .then(oauthUser => {
-      console.log('(4) CREATE ACCOUNT');
-      return Users.createFromOauth(oauthUser)
-        .then(actualRealUser => {
-          console.log('(5) ALMOST ...', actualRealUser);
-         return req.token = Users.signupTokenGenerator(actualRealUser);
-          console.log('req.token',req.token)
-        })
-        }).catch(error => error);
-    };
-module.exports = authorize;
+    });
+  let access_token = tokenResponse.body.id_token;
+  return access_token;
+}
+
+async function getRemoteUserInfo(token) {
+  return await superagent
+    .get(SERVICE)
+    .set('Authorization', `Bearer ${token}`)
+    .then(() => {
+      let user = Users.decode(token);
+      user.access_token = token;
+      return user;
+    });
+
+}
+async function getUser(oauthUser) {
+  let user = await Users.createFromOauth(oauthUser.email);
+  return user;
+}
+
+async function getToken(validUser) {
+  let token = await Users.siginTokenGenerator(validUser);
+  return token;
+}

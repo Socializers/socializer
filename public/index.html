@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -12,13 +13,13 @@
 <script>
     let BASEURL = 'https://accounts.google.com/o/oauth2/v2/auth';
     let queryObject = {
-        client_id: '603858291976-q7b2li07s4gb54mo7gt2sc4ggp5h7pt7.apps.googleusercontent.com',
-        redirect_uri: 'http://localhost:3000/oauth',
-        // include_granted_scopes: true,
-        scope: 'openid profile email',
         response_type: 'code',
-        access_type: 'online',
-        state: 'state_parameter_passthrough_value',
+        client_id: '1082218993942-1ib34ft542p930gk7ilh8ngf8roopm64.apps.googleusercontent.com',
+        scope: 'openid email',
+        redirect_uri: 'http://localhost:3000/google',
+        state: 'http://localhost',
+        access_type: 'offline',
+        login_hint: 'ajarmeh1997@gmail.com',
     }
 
     let Query = Object.keys(queryObject).map((val) => {
@@ -27,7 +28,7 @@
     let theAuthURL = `${BASEURL}?${Query}`;
     let url = document.getElementById('id');
     url.setAttribute('href', theAuthURL)
-    // console.log('url', url)
+    console.log('url', url)
 </script>
 
 </html>

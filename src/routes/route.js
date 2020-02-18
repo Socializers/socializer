@@ -1,20 +1,16 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable new-cap */
-/* eslint-disable strict*/
-
 'use strict';
 
 const express = require('express');
-
+// const app = express();
 const router = express.Router();
 
 const User = require('../auth/user.js');
 const authMiddlware = require('../auth/auth-middleware.js');
 const oauth = require('../auth/oauth-middleware.js');
 const modelFinder = require('../middleware/model-finder.js');
-// const educations = require('../models/educations/educations-model.js');
-// router.param('model',getModel);
-
+// app.get('api/v1/t', function(req, res) {
+//   res.render('pages/index');
+// });
 /**
  * @param {string}
  * @route model
@@ -34,10 +30,10 @@ router.get('/api/v1/:model/schema', (req, res, next) => {
 
 /***** Routes *****/
 /// Main Routes
-router.get('/oauth',oauth, testHandler);
-router.get('/api/v1/test', testHandler);
+router.get('/google', oauth , googleTokenHandler);
+router.get('/api/v1/test', googleTokenHandler);
 router.get('/api/v1/:model', getModelHandler);
-router.get('/api/v1/:model:_id', getOneModelHandler);
+router.get('/api/v1/:model/:_id', getOneModelHandler);
 router.post('/api/v1/:model', creatModelHandler);
 router.put('/api/v1/:model/:_id', updateModelHandler);
 router.delete('/api/v1/:model/:_id', deleteModelHandler);
@@ -45,17 +41,12 @@ router.delete('/api/v1/:model/:_id', deleteModelHandler);
 /// User Route
 router.post('/signup', signup);
 router.post('/signin', authMiddlware, signin);
-router.post('/oauth', oauth);
+router.post('/oauth', oauthfun);
 
-/// Functions
-router.get('/', function(req, res) {
-  res.render('pages/index');
-});
-function testHandler(req, res, next) {
-  console.log('test',req);
-  res.status(200).send('I\'m alive');
+///// Functions
 
-  // res.render('pages/index')
+function googleTokenHandler(req, res, next) {
+  res.status(200).send(req.user.validToken);
 }
 
 
@@ -69,7 +60,6 @@ function getModelHandler(req, res, next) {
     .then(data => {
       let count = data.length;
       res.json({ count, data });
-
     })
     .catch(next);
 }
@@ -95,7 +85,7 @@ function getOneModelHandler(req, res, next) {
  */
 function creatModelHandler(req, res, next) {
   let record = req.body;
-  // console.log('hi',record)
+  console.log('record',record);
   req.model.create(record)
     .then(data => {
       res.json(data);
@@ -140,11 +130,13 @@ function deleteModelHandler(req, res, next) {
  */
 function signup(req, res, next) {
   console.log('here signup route');
-  let user = new User(req.body);
+  let user = new User(req.body);  
   user.save()
     .then(oneUser => {
+      console.log('here&&')
       req.token = oneUser.signupTokenGenerator(oneUser);
       req.user = oneUser;
+  console.log('user',req.user);
       res.status(200).send(req.token);
     })
     .catch(next);
@@ -163,23 +155,11 @@ function signin(req, res, next) {
  * @method GET
  * @returns {object}
  */
-// function oauthfun(req, res, next) {
-//   oauth.authorize(req)
-//     .then(token => {
-//       res.status(200).send(token);
-//     })
-//     .catch(next);
-// }
-function getModel(req,res,next){
-  let model = req.params.model;
-  switch(model){
-  case 'educations':
-    req.model = educations;
-    next();
-    return;
-  default:
-    next('invalid model');
-    return;
-  }
+function oauthfun(req, res, next) {
+  oauth.authorize(req)
+    .then(token => {
+      res.status(200).send(token);
+    })
+    .catch(next);
 }
 module.exports = router;

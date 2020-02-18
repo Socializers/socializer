@@ -1,3 +1,5 @@
+
+/* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
 /* eslint-disable strict */
 'use strict';
@@ -6,13 +8,16 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const jwt_decode = require('jwt-decode');
 
-const SECRET = process.env.SECRET ;
+
+
+const SECRET = process.env.SECRET||'dede';
 
 const user = new mongoose.Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
-  email:{type:String , required:true}
+  email: { type: String },
 });
 
 user.pre('save', async function () {
@@ -22,27 +27,35 @@ user.pre('save', async function () {
   return Promise.reject();
 });
 
-user.statics.createFromOauth = function(email){
-  console.log('email in craete from oauth' , email);
+user.statics.createFromOauth = function (email) {
+  if (!email) { return Promise.reject('Validation Error'); }
 
-  if(!email) {return Promise.reject('Validation Error');}
-  return this.findOne({email: `${email.email}`})
+  return this.findOne({ email })
     .then(user => {
-      console.log('user in create from oauth', user);
-      if(!user){throw new Error('User Not Found');}
+      if (!user) { throw new Error('User Not Found'); }
+      console.log('Welcome Back', user.username);
       return user;
     })
-    .catch( error => {
+    .catch(error => {
+      console.log('Creating new user');
       let username = email;
       let password = 'none';
-      return this.create({username,password,email});
+      return this.create({ username, password, email });
     });
+
+};
+
+user.statics.decode = function (token) {
+  let decoded = jwt_decode(token);
+  return decoded;
 };
 
 user.statics.authenticator = function (auth) {
   let query = { username: auth.username };
   return this.findOne(query)
     .then(user => {
+    console.log('here',user);
+
       return user.passwordComparator(auth.password);
     })
     .catch(console.error);
@@ -57,23 +70,22 @@ user.methods.passwordComparator = function (pass) {
 };
 
 user.statics.siginTokenGenerator = function (user) {
-  // console.log('token');
   let token = {
     id: user._id,
-    username:user.username,
-    password:user.password,
-    email:user.email,
+    username: user.username,
+    email: user.email,
   };
   return jwt.sign(token, SECRET);
 };
 user.methods.signupTokenGenerator = function (user) {
-  // console.log('token');
+  console.log('user.js')
   let token = {
     id: user._id,
-    username:user.username,
-    password:user.password,
-    email:user.email,
+    username: user.username,
+    email: user.email,
   };
+  console.log('token',token);
+  
   return jwt.sign(token, SECRET);
 };
 
