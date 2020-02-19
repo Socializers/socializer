@@ -36,7 +36,6 @@ async function codeTokenExchanger(code) {
       redirect_uri: 'http://localhost:3000/google',
       grant_type: 'authorization_code',
     });
-  console.log('tokenObject', tokenResponse.body);
   let access_token = tokenResponse.body.id_token;
   return access_token;
 }
@@ -45,9 +44,7 @@ async function getRemoteUserInfo(token) {
   return await superagent
     .post(`https://www.googleapis.com/oauth2/v1/tokeninfo?id_token=${token}`)
     .then(data => {
-      console.log('data', data.body);
       let user = Users.decode(token) || data.body;
-      console.log('user', user);
       return user.email;
     });
 
