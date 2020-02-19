@@ -1,7 +1,11 @@
-/* eslint-disable no-undef */
-'use strict';
+
+/* eskint-disable strict */
+
+'use strcit';
+
 const schema = require('./educations-schema.js');
 const Model = require('../mongo.js');
+
 class Educations extends Model{
   constructor(){
     super(schema);

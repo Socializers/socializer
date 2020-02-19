@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
+
 /* eslint-disable strict */
-module.exports = (erorr,req,res,next)=>{
+'use strict';
+
+module.exports = (err, req, res, next) => {
   res.status(500);
   res.statusMessage = 'Generic Server Erorr!';
-  res.json({erorr:err,});
+  res.json({ erorr: err });
 };
 /**
    * modified res

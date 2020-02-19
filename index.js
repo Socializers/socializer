@@ -1,12 +1,20 @@
-'use strict'
-const server = require('./src/lib/server.js');
-const dotenv = require('dotenv');
+/* eslint-disable strict */
+'use strict';
+
+require('dotenv').config();
 const mongoose = require('mongoose');
-dotenv.config();
+
+const server = require('./src/server.js');
+
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/social';
+const PORT = process.env.PORT;
+
 const mongooseOptions = {
-  useNewUrlParser:true,
-  useCreateIndex:true,
-  useUnifiedTopology:true,
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
 };
-mongoose.connect(process.env.MONGODB_URI,mongooseOptions);
-server.start(process.env.PORT);
+
+mongoose.connect(MONGODB_URI, mongooseOptions);
+server.start(PORT);
