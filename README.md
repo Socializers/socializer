@@ -88,30 +88,28 @@ Dania Alrababaeh
 
 ## User Journey
 
-1- Sign up using a username and a password (other option to sign up With Google )
+1- Sign up using a username and a password (other option to sign up With Google and Github)
 
-2- Once the user sign up, they will be able to pick one of models they want to choose.
+2- The user has the ability to browse the schemas which have the models they want to choose.
 
- Anime 
+ - Anime 
 
- Developers 
+ - Developers 
 
- Math 
+ - Math 
 
- Science 
+ - Science 
 
- Video Games 
+ - Video Games 
 
-3- When the user chooses the model , they will have the ability to Read , create , update and delete and even add a property they would like to have in that model.
+3- When the user chooses the model , they will have the ability to Read , create , update and delete (CRUD) and even add a property they would like to have in that model(Dynamic Schemas).
 
-4- Once the user is done , the data will be presented for them in a JSON format and then be saved in the database.
+4- Once the user is done with filling the information in the form , the data will be presented for them as a JSON format and then be saved in the database.
 
 
 ## General Guidelines To Use Our End points
 
-* GET 
-
-* 
+[Link to our Ebook](https://app.gitbook.com/@hawamdeh9393/s/socializers/)
 
 
 
