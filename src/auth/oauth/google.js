@@ -4,6 +4,7 @@
 
 'use strict';
 
+require('dotenv').config();
 const superagent = require('superagent');
 
 const Users = require('../user.js');
@@ -31,8 +32,8 @@ async function codeTokenExchanger(code) {
     .type('form')
     .send({
       code: code,
-      client_id: '1082218993942-1ib34ft542p930gk7ilh8ngf8roopm64.apps.googleusercontent.com',
-      client_secret: 'zc8KkzVyO8w-HN2MEPIXg5oq',
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET,
       redirect_uri: 'http://localhost:3000/google',
       grant_type: 'authorization_code',
     });
