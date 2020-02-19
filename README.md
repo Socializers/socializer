@@ -1,7 +1,5 @@
 # Project Social Club App
----------------------------------
 
----------------------------------
 ## Web Application
 
 The CRUD web application consists of a Backend at this stage. The backend was written in Javascript using node.js.
@@ -26,9 +24,9 @@ Our web app will have only a backend at this moment and we will add the frontend
 
 5- As a user I want to be able to sign up/in smoothly and have the abilty to edit my name , email and basic profile sections.
 
+---------------------------------
 
 ## Tools Used
----------------------------------
 
 - Visual Studio code
 
@@ -62,29 +60,12 @@ npm start
 ```
 
 ---------------------------
+
 ## Data Flow (Backend, REST API)
 
 ![Data Flow Diagram](/assets/wireframe.jpg)
 
----------------------------
-## Data Model
-
-### Overall Project Schema
-![Database Schema](/assets/img/ERD.png)
-
----------------------------
-
-## Authors
-
-Mohammed Alhawamdeh
-
-Ibrahim Alajarmeh
-
-Dania Alrababaeh
-
 ------------------------------
-
-
 
 ## User Journey
 
@@ -106,11 +87,21 @@ Dania Alrababaeh
 
 4- Once the user is done with filling the information in the form , the data will be presented for them as a JSON format and then be saved in the database.
 
+---------------------------
 
 ## General Guidelines To Use Our End points
 
-[Link to our Ebook](https://app.gitbook.com/@hawamdeh9393/s/socializers/)
+[Check our Cool Ebook](https://app.gitbook.com/@hawamdeh9393/s/socializers/)
 
+---------------------------
+
+## Authors
+
+- Mohammed Alhawamdeh [github/Mohammed](https://github.com/MohammedAlhawamdeh)
+
+- Ibrahim Alajarmeh [github/ibrahim](https://github.com/ibrahim-hikari)
+
+- Dania Alrababaeh [github/dania](https://github.com/daniaalrababa9)
 
 
 
