@@ -55,7 +55,7 @@ Install all dependencies needed for the project.
 ```
 Database
 ```
-* explain how to use the database 
+Using Mongodb 
 ```
 cd Socializers/socializer
 npm start
@@ -75,6 +75,7 @@ npm start
 ---------------------------
 
 ## Authors
+
 Mohammed Alhawamdeh
 
 Ibrahim Alajarmeh
@@ -82,3 +83,40 @@ Ibrahim Alajarmeh
 Dania Alrababaeh
 
 ------------------------------
+
+
+
+## User Journey
+
+1- Sign up using a username and a password (other option to sign up With Google )
+
+2- Once the user sign up, they will be able to pick one of models they want to choose.
+
+ Anime 
+
+ Developers 
+
+ Math 
+
+ Science 
+
+ Video Games 
+
+3- When the user chooses the model , they will have the ability to Read , create , update and delete and even add a property they would like to have in that model.
+
+4- Once the user is done , the data will be presented for them in a JSON format and then be saved in the database.
+
+
+## General Guidelines To Use Our End points
+
+* GET 
+
+* 
+
+
+
+
+
+
+
+
