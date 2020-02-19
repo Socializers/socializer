@@ -1,7 +1,6 @@
 
-/* eskint-disable strict */
-
-'use strcit';
+/* eslint-disable strict */
+'use strict';
 
 const schema = require('./educations-schema.js');
 const Model = require('../mongo.js');
@@ -11,4 +10,4 @@ class Educations extends Model{
     super(schema);
   }
 }
-module.exports = new Educations;
+module.exports = Educations;

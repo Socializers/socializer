@@ -1,8 +1,5 @@
 # Project Social Club App
 ---------------------------------
-## We are deployed on Heroku
-
-[Link URL will be provided Later once we deployed in Heroku]
 
 ---------------------------------
 ## Web Application
@@ -43,13 +40,6 @@ Our web app will have only a backend at this moment and we will add the frontend
 
 ---------------------------------
 
-## Domain Modeling
-
-It will be provided later 
-![Data Modelling](/assets/)
-
----------------------------------
-
 ## Getting Started
 
 Clone this repository to your local machine.
@@ -83,7 +73,6 @@ npm start
 ![Database Schema](/assets/img/ERD.png)
 
 ---------------------------
-
 
 ## Authors
 Mohammed Alhawamdeh

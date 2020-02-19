@@ -1,17 +1,21 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable strict */
 /* eslint-disable new-cap */
-/* eslint-disable strict*/
-
+/* eslint-disable no-unused-vars */
 'use strict';
 
 const express = require('express');
-
+const methodOverride = require('method-override');
 const router = express.Router();
 
 const User = require('../auth/user.js');
 const authMiddlware = require('../auth/auth-middleware.js');
-const oauth = require('../auth/oauth-middleware.js');
+const githunOauthmiddleware = require('../auth/oauth/github.js');
+const googleOauthMiddleware = require('../auth/oauth/google.js');
+const facebookOauthMiddleware = require('../auth/oauth/facebook.js');
+const bearerMiddleware = require('../auth/bearer/bearer-middleware.js');
 const modelFinder = require('../middleware/model-finder.js');
+
+router.use(methodOverride(middleware));
 
 /**
  * @param {string}
@@ -32,10 +36,12 @@ router.get('/api/v1/:model/schema', (req, res, next) => {
 
 /***** Routes *****/
 /// Main Routes
-router.get('/google', oauth , googleTokenHandler);
+router.get('/', mainPage);
+router.get('/main', formPage);
+router.post('/schemas', showSchema);
 router.get('/api/v1/test', googleTokenHandler);
 router.get('/api/v1/:model', getModelHandler);
-router.get('/api/v1/:model:_id', getOneModelHandler);
+router.get('/api/v1/:model/:_id', getOneModelHandler);
 router.post('/api/v1/:model', creatModelHandler);
 router.put('/api/v1/:model/:_id', updateModelHandler);
 router.delete('/api/v1/:model/:_id', deleteModelHandler);
@@ -43,14 +49,30 @@ router.delete('/api/v1/:model/:_id', deleteModelHandler);
 /// User Route
 router.post('/signup', signup);
 router.post('/signin', authMiddlware, signin);
-router.post('/oauth', oauthfun);
+router.get('/google', googleOauthMiddleware, googleTokenHandler);
+router.get('/oauth', oauthfun);
+router.get('/user', bearerMiddleware, bearer);
 
 ///// Functions
 
-function googleTokenHandler(req, res, next) {
-  res.status(200).send(req.user.validToken);
+function formPage(req, res) {
+  res.status(200).render('pages/main');
 }
 
+function showSchema(req, res) {
+  console.log('req.body', req.body);
+  res.status(200).render('pages/crud', { model: req.body.name });
+}
+
+function googleTokenHandler(req, res, next) {
+  console.log('user', req.user);
+  res.status(200).render('signing-pages/google', { email: req.user.validUser.username });
+}
+
+function mainPage(req, res) {
+  console.log('here');
+  res.status(200).render('index');
+}
 
 /**
  * @param {string}
@@ -72,7 +94,7 @@ function getModelHandler(req, res, next) {
  * @returns {object}
  */
 function getOneModelHandler(req, res, next) {
-  let _id = req.param.id;
+  let _id = req.params._id;
   req.model.get(_id)
     .then(data => {
       res.json(data);
@@ -87,6 +109,7 @@ function getOneModelHandler(req, res, next) {
  */
 function creatModelHandler(req, res, next) {
   let record = req.body;
+  console.log('record', record);
   req.model.create(record)
     .then(data => {
       res.json(data);
@@ -100,13 +123,14 @@ function creatModelHandler(req, res, next) {
  * @returns {object}
  */
 function updateModelHandler(req, res, next) {
+  console.log('please', req);
   let record = req.body;
-  let _id = req.param.id;
+  let _id = req.params._id;
   req.model.update(_id, record)
     .then(data => {
       res.json(data);
     })
-    .catch(next);
+    .catch();
 }
 
 /**
@@ -115,10 +139,10 @@ function updateModelHandler(req, res, next) {
  * @returns {object}
  */
 function deleteModelHandler(req, res, next) {
-  let _id = req.param.id;
+  let _id = req.params._id;
   req.model.delete(_id)
     .then(() => {
-      let message = `${req.model}`;
+      let message = 'deleted';
       res.send(message);
     })
     .catch(next);
@@ -130,15 +154,24 @@ function deleteModelHandler(req, res, next) {
  * @returns {object}
  */
 function signup(req, res, next) {
-  console.log('here signup route');
-  let user = new User(req.body);
-  user.save()
-    .then(oneUser => {
-      req.token = oneUser.signupTokenGenerator(oneUser);
-      req.user = oneUser;
-      res.status(200).send(req.token);
+  let validUser = req.body.username;
+  User.findOne({ 'username': `${validUser}` })
+    .then(existUser => {
+      if (validUser === existUser.username) {
+        res.status(200).render('signing-pages/already');
+      }
     })
-    .catch(next);
+    .catch(() => {
+      console.log('here', [validUser, req.body]);
+      let user = new User(req.body);
+      user.save()
+        .then(oneUser => {
+          req.token = oneUser.signupTokenGenerator(oneUser);
+          console.log('here signup route', req.token);
+          req.user = oneUser;
+          res.status(200).render('signing-pages/basic', { name: req.user.username });
+        });
+    });
 }
 
 /**
@@ -155,10 +188,30 @@ function signin(req, res, next) {
  * @returns {object}
  */
 function oauthfun(req, res, next) {
-  oauth.authorize(req)
+  githunOauthmiddleware.authorize(req)
     .then(token => {
       res.status(200).send(token);
     })
     .catch(next);
 }
+
+/**
+ * @param {string}
+ * @method GET
+ * @returns {object}
+ */
+function bearer(req, res, next) {
+  console.log('route', req.user);
+  res.status(200).json(req.user);
+}
+
+
+function middleware(req, res) {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    let method = req.body._method;
+    delete req.body._method;
+    return method;
+  }
+}
+
 module.exports = router;
