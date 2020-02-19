@@ -1,7 +1,10 @@
+/* eslint-disable strict */
+/* eslint-disable new-cap */
+/* eslint-disable no-unused-vars */
 'use strict';
 
 const express = require('express');
-// const app = express();
+const methodOverride = require('method-override');
 const router = express.Router();
 
 const User = require('../auth/user.js');
@@ -11,6 +14,8 @@ const googleOauthMiddleware = require('../auth/oauth/google.js');
 const facebookOauthMiddleware = require('../auth/oauth/facebook.js');
 const bearerMiddleware = require('../auth/bearer/bearer-middleware.js');
 const modelFinder = require('../middleware/model-finder.js');
+
+router.use(methodOverride(middleware));
 
 /**
  * @param {string}
@@ -32,6 +37,8 @@ router.get('/api/v1/:model/schema', (req, res, next) => {
 /***** Routes *****/
 /// Main Routes
 router.get('/', mainPage);
+router.get('/main', formPage);
+router.post('/schemas', showSchema);
 router.get('/api/v1/test', googleTokenHandler);
 router.get('/api/v1/:model', getModelHandler);
 router.get('/api/v1/:model/:_id', getOneModelHandler);
@@ -48,9 +55,18 @@ router.get('/user', bearerMiddleware, bearer);
 
 ///// Functions
 
+function formPage(req, res) {
+  res.status(200).render('pages/main');
+}
+
+function showSchema(req, res) {
+  console.log('req.body', req.body);
+  res.status(200).render('pages/crud', { model: req.body.name });
+}
+
 function googleTokenHandler(req, res, next) {
   console.log('user', req.user);
-  res.status(200).render('google', { email: req.user.validUser.username });
+  res.status(200).render('signing-pages/google', { email: req.user.validUser.username });
 }
 
 function mainPage(req, res) {
@@ -78,7 +94,7 @@ function getModelHandler(req, res, next) {
  * @returns {object}
  */
 function getOneModelHandler(req, res, next) {
-  let _id = req.param.id;
+  let _id = req.params._id;
   req.model.get(_id)
     .then(data => {
       res.json(data);
@@ -93,7 +109,7 @@ function getOneModelHandler(req, res, next) {
  */
 function creatModelHandler(req, res, next) {
   let record = req.body;
-  console.log('record',record);
+  console.log('record', record);
   req.model.create(record)
     .then(data => {
       res.json(data);
@@ -107,13 +123,14 @@ function creatModelHandler(req, res, next) {
  * @returns {object}
  */
 function updateModelHandler(req, res, next) {
+  console.log('please', req);
   let record = req.body;
-  let _id = req.param.id;
+  let _id = req.params._id;
   req.model.update(_id, record)
     .then(data => {
       res.json(data);
     })
-    .catch(next);
+    .catch();
 }
 
 /**
@@ -122,10 +139,10 @@ function updateModelHandler(req, res, next) {
  * @returns {object}
  */
 function deleteModelHandler(req, res, next) {
-  let _id = req.param.id;
+  let _id = req.params._id;
   req.model.delete(_id)
     .then(() => {
-      let message = `${req.model}`;
+      let message = 'deleted';
       res.send(message);
     })
     .catch(next);
@@ -141,7 +158,7 @@ function signup(req, res, next) {
   User.findOne({ 'username': `${validUser}` })
     .then(existUser => {
       if (validUser === existUser.username) {
-        res.status(200).render('already');
+        res.status(200).render('signing-pages/already');
       }
     })
     .catch(() => {
@@ -152,7 +169,7 @@ function signup(req, res, next) {
           req.token = oneUser.signupTokenGenerator(oneUser);
           console.log('here signup route', req.token);
           req.user = oneUser;
-          res.status(200).render('basic', { name: req.user.username });
+          res.status(200).render('signing-pages/basic', { name: req.user.username });
         });
     });
 }
@@ -186,6 +203,15 @@ function oauthfun(req, res, next) {
 function bearer(req, res, next) {
   console.log('route', req.user);
   res.status(200).json(req.user);
+}
+
+
+function middleware(req, res) {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    let method = req.body._method;
+    delete req.body._method;
+    return method;
+  }
 }
 
 module.exports = router;

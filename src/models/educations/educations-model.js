@@ -1,4 +1,4 @@
-/* eskint-disable strict */
+/* eslint-disable strict */
 
 'use strict';
 
