@@ -1,5 +1,5 @@
-/* eslint-disable strict */
 
+/* eslint-disable strict */
 'use strict';
 
 const schema = require('./educations-schema.js');
@@ -10,5 +10,4 @@ class Educations extends Model{
     super(schema);
   }
 }
-
 module.exports = Educations;

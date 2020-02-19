@@ -1,5 +1,6 @@
 /* eskint-disable strict */
 
+// eslint-disable-next-line strict
 'use strict';
 
 const schema = require('./developers-schema.js');

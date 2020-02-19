@@ -1,8 +1,5 @@
 # Project Social Club App
 ---------------------------------
-## We are deployed on Heroku
-
-[Link URL will be provided Later once we deployed in Heroku]
 
 ---------------------------------
 ## Web Application
@@ -43,13 +40,6 @@ Our web app will have only a backend at this moment and we will add the frontend
 
 ---------------------------------
 
-## Domain Modeling
-
-It will be provided later 
-![Data Modelling](/assets/)
-
----------------------------------
-
 ## Getting Started
 
 Clone this repository to your local machine.
@@ -65,7 +55,7 @@ Install all dependencies needed for the project.
 ```
 Database
 ```
-* explain how to use the database 
+Using Mongodb 
 ```
 cd Socializers/socializer
 npm start
@@ -84,8 +74,8 @@ npm start
 
 ---------------------------
 
-
 ## Authors
+
 Mohammed Alhawamdeh
 
 Ibrahim Alajarmeh
@@ -93,3 +83,38 @@ Ibrahim Alajarmeh
 Dania Alrababaeh
 
 ------------------------------
+
+
+
+## User Journey
+
+1- Sign up using a username and a password (other option to sign up With Google and Github)
+
+2- The user has the ability to browse the schemas which have the models they want to choose.
+
+ - Anime 
+
+ - Developers 
+
+ - Math 
+
+ - Science 
+
+ - Video Games 
+
+3- When the user chooses the model , they will have the ability to Read , create , update and delete (CRUD) and even add a property they would like to have in that model(Dynamic Schemas).
+
+4- Once the user is done with filling the information in the form , the data will be presented for them as a JSON format and then be saved in the database.
+
+
+## General Guidelines To Use Our End points
+
+[Link to our Ebook](https://app.gitbook.com/@hawamdeh9393/s/socializers/)
+
+
+
+
+
+
+
+
