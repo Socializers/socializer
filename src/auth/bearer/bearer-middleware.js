@@ -10,7 +10,6 @@ module.exports = (req, res, next) => {
   let token = req.headers.authorization.split(' ').pop();
   Users.authenticateToken(token)
     .then(validUser =>{
-      console.log('sss',validUser);
       req.user = validUser;
       next();
     })

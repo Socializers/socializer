@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --verbose --coverage",
     "start": "nodemon index.js",
     "lint": "eslint '**/*.js'"
   },
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Socializers/socializer#readme",
   "dependencies": {
+    "@code-fellows/supergoose": "^1.0.1",
     "base-64": "^0.1.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -27,6 +28,7 @@
     "ejs": "^3.0.1",
     "eslint": "^6.8.0",
     "express": "^4.17.1",
+    "jest": "^25.1.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
     "method-override": "^3.0.0",
