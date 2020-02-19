@@ -50,6 +50,7 @@ router.delete('/api/v1/:model/:_id', deleteModelHandler);
 router.post('/signup', signup);
 router.post('/signin', authMiddlware, signin);
 router.get('/google', googleOauthMiddleware, googleTokenHandler);
+router.get('/github', githunOauthmiddleware, githubTokenHandler);
 router.get('/oauth', oauthfun);
 router.get('/user', bearerMiddleware, bearer);
 
@@ -66,7 +67,12 @@ function showSchema(req, res) {
 
 function googleTokenHandler(req, res, next) {
   console.log('user', req.user);
-  res.status(200).render('signing-pages/google', { email: req.user.validUser.username });
+  res.status(200).render('signing-pages/google', { googleEmail: req.user.validUser.username });
+}
+
+function githubTokenHandler(req,res,next) {
+  console.log('user', req.user.username);
+  res.status(200).render('signing-pages/github', { githubEmail: req.user.username });
 }
 
 function mainPage(req, res) {
