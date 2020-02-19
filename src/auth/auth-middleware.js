@@ -6,6 +6,7 @@ const base64 = require('base-64');
 const user = require('./user.js');
 
 module.exports = (req, res, next) => {
+  console.log('req',req);
   if (!req.headers.authorization) {
     next('Ops something went wrong');
     return;

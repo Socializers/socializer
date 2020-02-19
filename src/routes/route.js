@@ -9,6 +9,7 @@ const router = express.Router();
 
 const User = require('../auth/user.js');
 const authMiddlware = require('../auth/auth-middleware.js');
+const authMiddlwareV2 = require('../auth/auth-middleware-v2.js');
 const githunOauthmiddleware = require('../auth/oauth/github.js');
 const googleOauthMiddleware = require('../auth/oauth/google.js');
 const facebookOauthMiddleware = require('../auth/oauth/facebook.js');
@@ -49,6 +50,7 @@ router.delete('/api/v1/:model/:_id', deleteModelHandler);
 /// User Route
 router.post('/signup', signup);
 router.post('/signin', authMiddlware, signin);
+router.post('/signinV2', authMiddlwareV2, signin);
 router.get('/google', googleOauthMiddleware, googleTokenHandler);
 router.get('/github', githunOauthmiddleware, githubTokenHandler);
 router.get('/oauth', oauthfun);
@@ -69,7 +71,7 @@ function googleTokenHandler(req, res, next) {
   res.status(200).render('signing-pages/google', { googleEmail: req.user.validUser.username });
 }
 
-function githubTokenHandler(req,res,next) {
+function githubTokenHandler(req, res, next) {
   console.log('user', req.user.username);
   res.status(200).render('signing-pages/github', { githubEmail: req.user.username });
 }
@@ -180,7 +182,8 @@ function signup(req, res, next) {
  * @returns {object}
  */
 function signin(req, res, next) {
-  res.send(req.token);
+  console.log('ww', req.user);
+  res.status(200).render('signing-pages/basic', { name: req.user });
 }
 /**
  * @param {string}
