@@ -63,7 +63,6 @@ function formPage(req, res) {
 }
 
 function showSchema(req, res) {
-  console.log('req.body', req.body);
   res.status(200).render('pages/crud', { model: req.body.name });
 }
 
@@ -78,7 +77,6 @@ function githubTokenHandler(req, res, next) {
 }
 
 function mainPage(req, res) {
-  console.log('here');
   res.status(200).render('index');
 }
 
@@ -117,7 +115,6 @@ function getOneModelHandler(req, res, next) {
  */
 function creatModelHandler(req, res, next) {
   let record = req.body;
-  console.log('record', record);
   req.model.create(record)
     .then(data => {
       res.json(data);
@@ -131,7 +128,6 @@ function creatModelHandler(req, res, next) {
  * @returns {object}
  */
 function updateModelHandler(req, res, next) {
-  console.log('please', req);
   let record = req.body;
   let _id = req.params._id;
   req.model.update(_id, record)
@@ -170,12 +166,10 @@ function signup(req, res, next) {
       }
     })
     .catch(() => {
-      console.log('here', [validUser, req.body]);
       let user = new User(req.body);
       user.save()
         .then(oneUser => {
           req.token = oneUser.signupTokenGenerator(oneUser);
-          console.log('here signup route', req.token);
           req.user = oneUser;
           res.status(200).render('signing-pages/basic', { name: req.user.username });
         });
@@ -210,7 +204,6 @@ function oauthfun(req, res, next) {
  * @returns {object}
  */
 function bearer(req, res, next) {
-  console.log('route', req.user);
   res.status(200).json(req.user);
 }
 

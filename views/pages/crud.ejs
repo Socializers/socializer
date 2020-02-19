@@ -141,7 +141,6 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
-        console.log($('#create').html())
         $(document).ready(function () {
 
             $('#add').click(function (e) {
@@ -149,6 +148,7 @@
                 $('#labelField').before(`<label>${$('#field').val()}: <input type="text" name="${$('#field').val()}"></label>`);
                 $('#field').val('');
                 console.log($('#field').val())
+
             });
 
             $('#confirmGet').click(function (e) {
@@ -166,7 +166,6 @@
             $('#confirmUpdate').click(function (e) {
                 e.preventDefault();
                 $('#updateId').attr('action', `/api/v1/<%= model%>/${$("#update").val()}`);
-                console.log('update', $("#update").val())
             });
 
             $('#updateOne').click(function (e) {
@@ -174,7 +173,6 @@
                 let string = $('#updateField').val();
                 let fields = string.split(', '),
                     fieldObject = {};
-                console.log('ss', fields)
                 if (typeof fields === 'object') {
                     fields.forEach(field => {
                         let c = field.split('|');
@@ -184,7 +182,6 @@
                 let result = Object.keys(fieldObject).map(function (key) {
                     return [key, fieldObject[key]];
                 });
-                console.log('asdf', result)
                 result.forEach(oneField => {
                     console.log('oneField[0]', oneField[0])
                     console.log('oneField[1]', oneField[1])
@@ -192,8 +189,6 @@
                     $('#updateField').remove();
                 });
                 $('#updateField').text(fieldObject);
-                console.log('done', fieldObject)
-
             });
 
         });

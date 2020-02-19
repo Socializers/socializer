@@ -33,11 +33,9 @@ user.statics.createFromOauth = function (email) {
   return this.findOne({ email })
     .then(user => {
       if (!user) { throw new Error('User Not Found'); }
-      console.log('Welcome Back', user.username);
       return user;
     })
     .catch(error => {
-      console.log('Creating new user');
       let username = email;
       let password = 'none';
       return this.create({ username, password, email });
@@ -54,8 +52,6 @@ user.statics.authenticator = function (auth) {
   let query = { username: auth.username };
   return this.findOne(query)
     .then(user => {
-      console.log('here',user);
-
       return user.passwordComparator(auth.password);
     })
     .catch(console.error);
@@ -78,14 +74,11 @@ user.statics.siginTokenGenerator = function (user) {
   return jwt.sign(token, SECRET);
 };
 user.methods.signupTokenGenerator = function (user) {
-  console.log('user.js');
   let token = {
     id: user._id,
     username: user.username,
     email: user.email,
   };
-  console.log('token',token);
-
   return jwt.sign(token, SECRET);
 };
 

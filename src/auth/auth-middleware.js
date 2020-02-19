@@ -8,7 +8,6 @@ const user = require('./user.js');
 module.exports = (req, res, next) => {
   console.log('req',req);
   if (!req.headers.authorization) {
-    console.log('req.headers.authorization',req.headers.authorization);
     next('Ops something went wrong');
     return;
   }
@@ -19,9 +18,7 @@ module.exports = (req, res, next) => {
 
   user.authenticator(auth)
     .then(validUser => {
-      console.log('sss');
       req.token = user.siginTokenGenerator(validUser);
-      console.log(req.token);
       next();
     })
     .catch(() => next('Ops'));
