@@ -2,9 +2,9 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const sciences = mongoose.Schema({
+const science = mongoose.Schema({
     name: { type: String, required: true },
     des: { type: String, required: true },
 }, { strict:false })
 
-module.exports = mongoose.model('sciences', sciences)
+module.exports = mongoose.model('science', science)

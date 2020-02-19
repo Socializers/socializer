@@ -13,7 +13,7 @@
             text-shadow: -1px -1px #9df, 1px 1px #49d, -3px 0 4px #000;
             font-family: "Segoe print", Arial, Helvetica, sans-serif;
             color: #6bf;
-            padding: 24px 32px 32px 32px;
+            padding: 0px 32px 0px 32px;
             font-weight: lighter;
             -moz-box-shadow: 2px 2px 6px #888;
             -webkit-box-shadow: 2px 2px 6px #888;
@@ -105,7 +105,16 @@
             </label>
             <button type="submit">signup</button>
         </form><br><br>
-        <a href="/main">Go To See Our Cool Schemas</a> <br> <br>
+        <form id="signin" action="/signinv2" method="POST">
+            <label for="username">
+                UserName: <input name="username" type="text" required>
+            </label>
+            <label for="password">
+                Password: <input name="password" type="password" required>
+            </label>
+            <button type="submit">signin</button>
+        </form><br><br>
+        <a href="/main">Check out our cool social club app</a> <br> <br>
         <a id="google" href="#">Login VIA GOOGLE</a> <br> <br>
         <a id="git" href="#">Login VIA GITHUB</a>
     </main>
