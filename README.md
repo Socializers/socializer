@@ -71,9 +71,7 @@ npm start
 
 1- Sign up using a username and a password (other options you can sign in are With Google or Github)
 
-2- The user has the ability to browse the bueprint
-
-in our application which have the models they want to choose.
+2- The user has the ability to browse the bueprint in our application which have the models they want to choose.
 
  - Anime 
 
