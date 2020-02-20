@@ -2,13 +2,13 @@
 
 ## Web Application
 
-The CRUD web application consists of a Backend at this stage. The backend was written in Javascript using node.js.
-
-Our application is provided to help people in our local communites to invest their time on either learning new stuff related to what they struggle in their life or to entertain themselves.
+Our application will help people in our local communites to invest their time on either learning new stuff related to what they struggle in their lives or to entertain themselves.
 
 The user will be able to observe and learn a set of new skills in the education part in our web app, in addition to that,the user will have the ability to entertain him/her self in a various way that are included in the entertainment section in our app.
 
-Our web app will have only a backend at this moment and we will add the frontend once we reach the second part of our course.
+The CRUD web application consists of a Backend at this stage. The backend was written in Javascript using node.js.
+
+ Although Our web app will have only a backend at this part of this course, we have a slight frontend to help visulaize the data modification.
 
 ---------------------------------
 
@@ -44,7 +44,7 @@ Clone this repository to your local machine.
 ```
 $ git clone https://github.com/Socializers/socializer.git
 ```
-Once downloaded, you can either use the dotnet CLI utilities or Visual Studio 2017 (or greater) to build the web application.
+Once downloaded, you can use any code editior to browse the files and build the web application.
 ```
 cd Socializers/socializer
 `npm i`
@@ -69,9 +69,11 @@ npm start
 
 ## User Journey
 
-1- Sign up using a username and a password (other option to sign up With Google and Github)
+1- Sign up using a username and a password (other option to sign in  With Google or Github)
 
-2- The user has the ability to browse the schemas which have the models they want to choose.
+2- The user has the ability to browse the bueprint
+
+in our application which have the models they want to choose.
 
  - Anime 
 
@@ -85,7 +87,7 @@ npm start
 
 3- When the user chooses the model , they will have the ability to Read , create , update and delete (CRUD) and even add a property they would like to have in that model(Dynamic Schemas).
 
-4- Once the user is done with filling the information in the form , the data will be presented for them as a JSON format and then be saved in the database.
+4- Once the user is done with filling the information in the form , the data will be presented for them and then be saved in the database.
 
 ---------------------------
 
@@ -102,10 +104,3 @@ npm start
 - Ibrahim Alajarmeh [github/ibrahim](https://github.com/ibrahim-hikari)
 
 - Dania Alrababaeh [github/dania](https://github.com/daniaalrababa9)
-
-
-
-
-
-
-
