@@ -4,7 +4,7 @@
 
 Our application will help people in our local communites to invest their time on either learning new stuff related to what they struggle in their lives or to entertain themselves, so that the main goal of our application  is to have our users wisely investing their time.
 
-The user will be able to observe and learn a set of new skills in the education part in our web app, in addition to that,the user will have the ability to entertain him/her self in a various way that are included in the entertainment section in our app.
+The user will be able to observe and learn a set of new skills in the education part of our web app, in addition to that,the user will have the ability to entertain him/her self in a various way that are included in the entertainment section in our app.
 
 The CRUD web application consists of a Backend at this stage. The backend was written in Javascript using node.js.
 
