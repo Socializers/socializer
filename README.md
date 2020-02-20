@@ -69,7 +69,7 @@ npm start
 
 ## User Journey
 
-1- Sign up using a username and a password (other option to sign in  With Google or Github)
+1- Sign up using a username and a password (other options you can sign in are With Google or Github)
 
 2- The user has the ability to browse the bueprint
 
