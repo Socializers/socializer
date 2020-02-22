@@ -4,23 +4,6 @@
 
 const fs = require('fs');
 
-console.log('begin');
-
-let content = `/* eslint-disable strict */
-
-'use strict';
-
-const schema = require('./anime-schema.js');
-const Model = require('../mongo.js');
-
-class Anime extends Model{
-  constructor(){
-    super(schema);
-  }
-}
-
-module.exports = Anime;`;
-
 function modelReader(modelName) {
   let content =
 `/* eslint-disable strict */
@@ -58,8 +41,6 @@ module.exports = mongoose.model('${modelName}', ${modelName});`;
   return content;
 }
 
-console.log('test', content);
-
 function modelCreator(modelName) {
 
   if (!fs.existsSync(`./src/models/${modelName}`)) {
@@ -86,7 +67,5 @@ function modelCreator(modelName) {
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
-console.log('end');
-modelCreator('seires');
 
 module.exports = modelCreator;

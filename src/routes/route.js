@@ -15,6 +15,7 @@ const googleOauthMiddleware = require('../auth/oauth/google.js');
 const facebookOauthMiddleware = require('../auth/oauth/facebook.js');
 const bearerMiddleware = require('../auth/bearer/bearer-middleware.js');
 const modelFinder = require('../middleware/model-finder.js');
+const modelCreator = require('../middleware/model-creator.js');
 
 router.use(methodOverride(middleware));
 
@@ -63,6 +64,8 @@ function formPage(req, res) {
 }
 
 function showSchema(req, res) {
+  let newModel = req.body.name;
+  modelCreator(newModel);
   res.status(200).render('pages/crud', { model: req.body.name });
 }
 
