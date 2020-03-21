@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/Socializers/socializer/issues"
   },
-  "homepage": "https://github.com/Socializers/socializer#readme",
+  "homepage": "/",
   "dependencies": {
     "@code-fellows/supergoose": "^1.0.1",
     "base-64": "^0.1.0",
