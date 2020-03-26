@@ -12,7 +12,7 @@ const authMiddlware = require('../auth/auth-middleware.js');
 const authMiddlwareV2 = require('../auth/auth-middleware-v2.js');
 const githunOauthmiddleware = require('../auth/oauth/github.js');
 const googleOauthMiddleware = require('../auth/oauth/google.js');
-const facebookOauthMiddleware = require('../auth/oauth/facebook.js');
+const passport = require('../auth/oauth/facebook.js');
 const bearerMiddleware = require('../auth/bearer/bearer-middleware.js');
 const modelFinder = require('../middleware/model-finder.js');
 const modelCreator = require('../middleware/model-creator.js');
@@ -54,6 +54,12 @@ router.post('/signin', authMiddlware, signin);
 router.post('/signinV2', authMiddlwareV2, signin);
 router.get('/google', googleOauthMiddleware, googleTokenHandler);
 router.get('/github', githunOauthmiddleware, githubTokenHandler);
+router.get('/auth/facebook', passport.authenticate('facebook'));
+router.get('/auth/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+  }));
 router.get('/oauth', oauthfun);
 router.get('/user', bearerMiddleware, bearer);
 
